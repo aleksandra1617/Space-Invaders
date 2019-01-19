@@ -49,25 +49,19 @@ def main():
     # Create objects & Setup
     pl = Player()
     pl.setup(window)
-
     bullet_scale = 10
 
-    # Dividing bullet_scale by 4 because the bullet width is half of the bullet_scale/height
-    # halving that is the middle of the width
-    bullet = Bullet(34, 3, pl.rect.centerx-bullet_scale/4, pl.rect.y, bullet_scale)
 
     # Game loop
     while loop:
         window.fill((10, 28, 48))
 
         # Render
-        bullet.draw(window)
         pl.draw(window)
 
         # Update
         pl.fire(Bullet(34, 3, pl.rect.centerx-bullet_scale/4, pl.rect.y, bullet_scale))
         pl.movement(0.5)
-        bullet.update(pl.rect)
 
         for e in pygame.event.get():
             if e.type == pygame.QUIT:

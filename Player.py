@@ -17,6 +17,10 @@ class Bullet:
         # When the bullet is fired it will no longer follow the player
         if not self.fired:
             self.rect.x = player_rect.centerx-self.rect.width/2
+        else:
+            # Move the bullet up
+            self.rect.y -= self.speed
+            print(self.rect.y)
 
     # Draw will be almost the same no matter what we are drawing so it could be done in Utilities
     def draw(self, window):
@@ -73,20 +77,18 @@ class Player:
     def fire(self, ammo):
         key_state = pygame.key.get_pressed()
 
+        # The second condition (len(self.ammunition) == 0) is to prevent adding more then one bullet per fire click.
         if key_state[pygame.K_SPACE]:
             # Load the ammo
             self.ammunition.append(ammo)
 
-            # if the ammo is past the top border of the window
-            if ammo.rect.y < 0:
-                # Remove ammo
-                self.ammunition.pop()
+            # Fire the first bullet Bullet
+            self.ammunition[0].fired = True
 
         if len(self.ammunition) != 0:
-            # Fire
-            self.ammunition[0].fired = True  # Affects the bullet update function
+            self.ammunition[0].update(self.rect)
 
-            # Move the bullet up
-            self.ammunition[0].rect.y -= ammo.speed
-
-            print(self.ammunition)
+            # if the ammo is past the top border of the window
+            if self.ammunition[0].rect.y < 0:
+                # Remove ammo
+                self.ammunition.clear()

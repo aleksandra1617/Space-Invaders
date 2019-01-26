@@ -15,14 +15,12 @@ class Bullet:
     def update(self, player_rect):
 
         # When the bullet is fired it will no longer follow the player
-        if not self.fired:
-            self.rect.x = player_rect.centerx-self.rect.width/2
-        else:
+        if self.fired:
             # Move the bullet up
             self.rect.y -= self.speed
-            print(self.rect.y)
+        else:
+            self.rect.x = player_rect.centerx - self.rect.width / 2
 
-    # Draw will be almost the same no matter what we are drawing so it could be done in Utilities
     def draw(self, window):
         # Render self.img using the self.rect dimensions
         self.rect = pygame.draw.rect(window, self.col, self.rect)

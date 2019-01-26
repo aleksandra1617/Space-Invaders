@@ -51,7 +51,6 @@ def main():
     pl.setup(window)
     bullet_scale = 10
 
-
     # Game loop
     while loop:
         window.fill((10, 28, 48))
@@ -60,7 +59,7 @@ def main():
         pl.draw(window)
 
         # Update
-        pl.fire(Bullet(34, 3, pl.rect.centerx-bullet_scale/4, pl.rect.y, bullet_scale))
+        pl.fire(Bullet(34, 8, pl.rect.centerx-bullet_scale/4, pl.rect.y, bullet_scale))
         pl.movement(0.5)
 
         for e in pygame.event.get():

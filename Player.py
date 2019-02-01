@@ -12,14 +12,9 @@ class Bullet:
         self.col = (50, 180, 255)
         self.fired = False
 
-    def update(self, player_rect):
-
-        # When the bullet is fired it will no longer follow the player
-        if self.fired:
-            # Move the bullet up
-            self.rect.y -= self.speed
-        else:
-            self.rect.x = player_rect.centerx - self.rect.width / 2
+    def update(self):
+        # Move the bullet up
+        self.rect.y -= self.speed
 
     def draw(self, window):
         # Render self.img using the self.rect dimensions
@@ -46,11 +41,6 @@ class Player:
         # Render player self.img using the rect dimensions
         window.blit(self.img, self.rect)
 
-        # if there is a bullet in the array
-        if len(self.ammunition) != 0:
-            # Show which bullet is the next to fire/fired
-            self.ammunition[0].draw(window)
-
     # Magnitude serves to set the magnitude of velocity
     def movement(self, magnitude=1):
         key_state = pygame.key.get_pressed()
@@ -72,21 +62,13 @@ class Player:
         # Update position
         self.rect.x += self.velocity
 
-    def fire(self, ammo):
+    def fire(self, bullet_scale):
+        pygame.key.set_repeat(1, 10)
         key_state = pygame.key.get_pressed()
 
         # The second condition (len(self.ammunition) == 0) is to prevent adding more then one bullet per fire click.
         if key_state[pygame.K_SPACE]:
-            # Load the ammo
-            self.ammunition.append(ammo)
 
-            # Fire the first bullet Bullet
-            self.ammunition[0].fired = True
+            # Load the bullet
+            self.ammunition.append(Bullet(34, 7, self.rect.centerx - bullet_scale / 4, self.rect.y, bullet_scale))
 
-        if len(self.ammunition) != 0:
-            self.ammunition[0].update(self.rect)
-
-            # if the ammo is past the top border of the window
-            if self.ammunition[0].rect.y < 0:
-                # Remove ammo
-                self.ammunition.clear()

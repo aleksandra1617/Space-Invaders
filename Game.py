@@ -1,12 +1,5 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # SPACIFICATION (LOOSE) # # # # # # # # # # # # # # # # # # # # # # # #
-# TODO (1) : Change the player movement to work with velocity                                                         #
-# - consistently updating position by a set amount (+) or (-)                                                         #
-# - make sure the ship will stops moving if not pressing any keys to move                                             #
-# - limit the player movement so that they do not go out of the screen  TODO                                          #
-# TODO (2) : Create a bullet                                                                                          #
-# - Spawn a small rectangle at the position of the player                                                             #
-# - Create an Update function for the bullet to make sure it moves with the player Update(player_x_pos)               #
-# - On key press shoot projectiles                                                                                    #
+# TODO (2) : add fire rate                                                                                            #                                                                  #
 #                                                                                                                     #
 # TODO (3) : Spawn alien, add alien route                                                                             #
 # TODO (4) : Alien collision and response                                                                             #
@@ -35,7 +28,7 @@
 
 # imports
 import pygame
-from Player import Player, Bullet
+from Player import Player
 
 pygame.init()
 
@@ -59,8 +52,17 @@ def main():
         pl.draw(window)
 
         # Update
-        pl.fire(Bullet(34, 8, pl.rect.centerx-bullet_scale/4, pl.rect.y, bullet_scale))
+        pl.fire(bullet_scale)
         pl.movement(0.5)
+
+        for bullet in pl.ammunition:
+            bullet.update()
+            bullet.draw(window)
+
+            # if the ammo is past the top border of the window
+            if bullet.rect.y == 0:
+                # Remove ammo
+                pl.ammunition.remove(bullet)
 
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
